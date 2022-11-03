@@ -88,11 +88,17 @@ impl Plugin for SulettaFX {
 
     fn process(
         &mut self,
-        _buffer: &mut Buffer,
+        buffer: &mut Buffer,
         _aux: &mut AuxiliaryBuffers,
         _context: &mut impl ProcessContext<Self>,
     ) -> ProcessStatus {
-        // TODO
+        for channel_samples in buffer.iter_samples() {
+            let gain = self.params.gain.smoothed.next();
+
+            for sample in channel_samples {
+                *sample *= gain;
+            }
+        }
 
         ProcessStatus::Normal
     }
