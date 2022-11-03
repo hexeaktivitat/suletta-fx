@@ -2,25 +2,25 @@ use std::sync::Arc;
 
 use nih_plug::prelude::*;
 
-struct SulettaFX {
-    params: Arc<SulettaFXParams>,
+struct SulettaFXGain {
+    params: Arc<SulettaFXGainParams>,
 }
 
 #[derive(Params)]
-struct SulettaFXParams {
+struct SulettaFXGainParams {
     #[id = "gain"]
     pub gain: FloatParam,
 }
 
-impl Default for SulettaFX {
+impl Default for SulettaFXGain {
     fn default() -> Self {
         Self {
-            params: Arc::new(SulettaFXParams::default()),
+            params: Arc::new(SulettaFXGainParams::default()),
         }
     }
 }
 
-impl Default for SulettaFXParams {
+impl Default for SulettaFXGainParams {
     fn default() -> Self {
         Self {
             gain: FloatParam::new(
@@ -40,15 +40,15 @@ impl Default for SulettaFXParams {
     }
 }
 
-impl Plugin for SulettaFX {
+impl Plugin for SulettaFXGain {
     // TODO
 
-    const NAME: &'static str = "Suletta FX";
+    const NAME: &'static str = "Suletta FX - Gain";
     const VENDOR: &'static str = "hexeaktivitat";
     const URL: &'static str = "https://github.com/hexeaktivitat/suletta-fx";
     const EMAIL: &'static str = "hexeaktivitat@gmail.com";
 
-    const VERSION: &'static str = "0.0.1";
+    const VERSION: &'static str = "0.1.0";
 
     const DEFAULT_INPUT_CHANNELS: u32 = 2;
     const DEFAULT_OUTPUT_CHANNELS: u32 = 2;
@@ -104,9 +104,9 @@ impl Plugin for SulettaFX {
     }
 }
 
-impl ClapPlugin for SulettaFX {
-    const CLAP_ID: &'static str = "Suletta FX";
-    const CLAP_DESCRIPTION: Option<&'static str> = Some("FX for Suletta");
+impl ClapPlugin for SulettaFXGain {
+    const CLAP_ID: &'static str = "Suletta FX - Gain";
+    const CLAP_DESCRIPTION: Option<&'static str> = Some("Gain FX for Suletta");
     const CLAP_MANUAL_URL: Option<&'static str> = Some(Self::URL);
     const CLAP_SUPPORT_URL: Option<&'static str> = None;
 
@@ -114,11 +114,11 @@ impl ClapPlugin for SulettaFX {
         &[ClapFeature::AudioEffect, ClapFeature::MultiEffects];
 }
 
-impl Vst3Plugin for SulettaFX {
-    const VST3_CLASS_ID: [u8; 16] = *b"SulettaFXxxxxxxx";
+impl Vst3Plugin for SulettaFXGain {
+    const VST3_CLASS_ID: [u8; 16] = *b"SulettaFXGainxxx";
 
     const VST3_CATEGORIES: &'static str = "Audio Effect|Multi Effects";
 }
 
-nih_export_clap!(SulettaFX);
-nih_export_vst3!(SulettaFX);
+nih_export_clap!(SulettaFXGain);
+nih_export_vst3!(SulettaFXGain);

@@ -1,6 +1,6 @@
 [package]
 name = "suletta-fx"
-version = "0.0.1"
+version = "0.0.2"
 edition = "2021"
 license = "GPL-3.0+"
 
@@ -16,4 +16,5 @@ nih_plug = { git = "https://github.com/robbert-vdh/nih-plug" }
 [workspace]
 members = [
     "xtask",
+    # plugins for distribution
     "plugins/gain"]
