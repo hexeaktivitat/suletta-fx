@@ -1,5 +1,5 @@
 [package]
-name = "suletta-fx"
+name = "saturation"
 version = "0.0.1"
 edition = "2021"
 license = "GPL-3.0+"
@@ -12,7 +12,3 @@ crate-type = ["cdylib"]
 [dependencies]
 fundsp = { git = "https://github.com/SamiPerttu/fundsp" }
 nih_plug = { git = "https://github.com/robbert-vdh/nih-plug" }
-
-[workspace]
-members = ["xtask",
-           "saturation"]
