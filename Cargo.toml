@@ -14,12 +14,8 @@ fundsp = { git = "https://github.com/SamiPerttu/fundsp" }
 nih_plug = { git = "https://github.com/robbert-vdh/nih-plug" }
 
 [workspace]
-<<<<<<< HEAD
 members = [
     "xtask",
     # plugins for distribution
-    "plugins/gain"]
-=======
-members = ["xtask",
-           "saturation"]
->>>>>>> 4645640b3bdd7b2dfac0c5746418e68ee466db5b
+    "plugins/gain",
+    "plugins/saturation"]
