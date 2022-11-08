@@ -28,7 +28,7 @@ impl Default for SulettaFXParams {
 impl Plugin for SulettaFX {
     // TODO
 
-    const NAME: &'static str = "Suletta FX - Gain";
+    const NAME: &'static str = "Suletta FX - ";
     const VENDOR: &'static str = "hexeaktivitat";
     const URL: &'static str = "https://github.com/hexeaktivitat/suletta-fx";
     const EMAIL: &'static str = "hexeaktivitat@gmail.com";
@@ -73,11 +73,16 @@ impl Plugin for SulettaFX {
 
     fn process(
         &mut self,
-        _buffer: &mut Buffer,
+        buffer: &mut Buffer,
         _aux: &mut AuxiliaryBuffers,
         _context: &mut impl ProcessContext<Self>,
     ) -> ProcessStatus {
-        // TODO
+        for channel_samples in buffer.iter_samples() {
+            // TODO
+            for sample in channel_samples {
+                *sample *= 1.0;
+            }
+        }
 
         ProcessStatus::Normal
     }
