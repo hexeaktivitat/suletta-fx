@@ -1,46 +1,35 @@
+// boilerplate template for additional plugin defs
+
 use std::sync::Arc;
 
 use nih_plug::prelude::*;
 
-struct SulettaFXGain {
-    params: Arc<SulettaFXGainParams>,
+struct SulettaFX {
+    params: Arc<SulettaFXParams>,
 }
 
 #[derive(Params)]
-struct SulettaFXGainParams {
-    #[id = "gain"]
-    pub gain: FloatParam,
+struct SulettaFXParams {
+
 }
 
-impl Default for SulettaFXGain {
+impl Default for SulettaFX {
     fn default() -> Self {
         Self {
-            params: Arc::new(SulettaFXGainParams::default()),
+            params: Arc::new(SulettaFXParams::default()),
         }
     }
 }
 
-impl Default for SulettaFXGainParams {
+impl Default for SulettaFXParams {
     fn default() -> Self {
         Self {
-            gain: FloatParam::new(
-                "Gain",
-                util::db_to_gain(0.0),
-                FloatRange::Skewed {
-                    min: util::db_to_gain(-127.0),
-                    max: util::db_to_gain(0.0),
-                    factor: FloatRange::gain_skew_factor(-127.0, 0.0),
-                },
-            )
-            .with_smoother(SmoothingStyle::Logarithmic(50.0))
-            .with_unit(" dB")
-            .with_value_to_string(formatters::v2s_f32_gain_to_db(2))
-            .with_string_to_value(formatters::s2v_f32_gain_to_db()),
+
         }
     }
 }
 
-impl Plugin for SulettaFXGain {
+impl Plugin for SulettaFX {
     // TODO
 
     const NAME: &'static str = "Suletta FX - Gain";
@@ -88,25 +77,19 @@ impl Plugin for SulettaFXGain {
 
     fn process(
         &mut self,
-        buffer: &mut Buffer,
+        _buffer: &mut Buffer,
         _aux: &mut AuxiliaryBuffers,
         _context: &mut impl ProcessContext<Self>,
     ) -> ProcessStatus {
-        for channel_samples in buffer.iter_samples() {
-            let gain = self.params.gain.smoothed.next();
-
-            for sample in channel_samples {
-                *sample *= gain;
-            }
-        }
+        // TODO
 
         ProcessStatus::Normal
     }
 }
 
-impl ClapPlugin for SulettaFXGain {
-    const CLAP_ID: &'static str = "Suletta FX - Gain";
-    const CLAP_DESCRIPTION: Option<&'static str> = Some("Gain FX for Suletta");
+impl ClapPlugin for SulettaFX {
+    const CLAP_ID: &'static str = "Suletta FX - ";
+    const CLAP_DESCRIPTION: Option<&'static str> = Some(" FX for Suletta");
     const CLAP_MANUAL_URL: Option<&'static str> = Some(Self::URL);
     const CLAP_SUPPORT_URL: Option<&'static str> = None;
 
@@ -114,11 +97,11 @@ impl ClapPlugin for SulettaFXGain {
         &[ClapFeature::AudioEffect, ClapFeature::MultiEffects];
 }
 
-impl Vst3Plugin for SulettaFXGain {
-    const VST3_CLASS_ID: [u8; 16] = *b"SulettaFXGainxxx";
+impl Vst3Plugin for SulettaFX {
+    const VST3_CLASS_ID: [u8; 16] = *b"SulettaFXxxxxxxx";
 
     const VST3_CATEGORIES: &'static str = "Audio Effect|Multi Effects";
 }
 
-nih_export_clap!(SulettaFXGain);
-nih_export_vst3!(SulettaFXGain);
+nih_export_clap!(SulettaFX);
+nih_export_vst3!(SulettaFX);
