@@ -10,6 +10,10 @@ struct SulettaFXSat {
 struct SulettaFXSatParams {
     #[id = "gain"]
     pub gain: FloatParam,
+    #[id = "drive"]
+    pub drive: FloatParam,
+    #[id = "amt"]
+    pub amount: FloatParam,
 }
 
 impl Default for SulettaFXSat {
@@ -36,6 +40,28 @@ impl Default for SulettaFXSatParams {
             .with_unit(" dB")
             .with_value_to_string(formatters::v2s_f32_gain_to_db(2))
             .with_string_to_value(formatters::s2v_f32_gain_to_db()),
+            drive: FloatParam::new(
+                "Drive",
+                util::db_to_gain(0.0),
+                FloatRange::Skewed {
+                    min: util::db_to_gain(0.0),
+                    max: util::db_to_gain(32.0),
+                    factor: FloatRange::gain_skew_factor(0.0, 32.0),
+                },
+            )
+            .with_smoother(SmoothingStyle::Logarithmic(50.0))
+            .with_unit(" dB")
+            .with_value_to_string(formatters::v2s_f32_gain_to_db(2))
+            .with_string_to_value(formatters::s2v_f32_gain_to_db()),
+            amount: FloatParam::new(
+                "Amount",
+                1.0,
+                FloatRange::Linear {
+                    min: 1.0,
+                    max: 32.0
+                }
+            )
+            .with_smoother(SmoothingStyle::Linear(16.6)),
         }
     }
 }
@@ -94,8 +120,11 @@ impl Plugin for SulettaFXSat {
     ) -> ProcessStatus {
         for channel_samples in buffer.iter_samples() {
             let gain = self.params.gain.smoothed.next();
+            let drive = self.params.drive.smoothed.next();
+            let amt = self.params.amount.smoothed.next();
 
             for sample in channel_samples {
+                *sample = (*sample * drive * amt).tanh();
                 *sample *= gain;
             }
         }

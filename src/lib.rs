@@ -9,9 +9,7 @@ struct SulettaFX {
 }
 
 #[derive(Params)]
-struct SulettaFXParams {
-
-}
+struct SulettaFXParams {}
 
 impl Default for SulettaFX {
     fn default() -> Self {
@@ -23,9 +21,7 @@ impl Default for SulettaFX {
 
 impl Default for SulettaFXParams {
     fn default() -> Self {
-        Self {
-
-        }
+        Self {}
     }
 }
 
