@@ -4,6 +4,7 @@ use nih_plug::prelude::*;
 
 struct SulettaFX {
     params: Arc<SulettaFXParams>,
+    last_sample: f32,
 }
 
 #[derive(Params)]
@@ -18,6 +19,7 @@ impl Default for SulettaFX {
     fn default() -> Self {
         Self {
             params: Arc::new(SulettaFXParams::default()),
+            last_sample: 0.0,
         }
     }
 }
@@ -101,9 +103,10 @@ impl Plugin for SulettaFX {
         _context: &mut impl ProcessContext<Self>,
     ) -> ProcessStatus {
         for channel_samples in buffer.iter_samples() {
-            // TODO
             for sample in channel_samples {
-                *sample *= 1.0;
+                let cur_sample = *sample;
+                *sample += self.last_sample;
+                self.last_sample = cur_sample;
             }
         }
 
