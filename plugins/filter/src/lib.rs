@@ -12,7 +12,7 @@ struct SulettaFXParams {
     #[id = "cutoff"]
     cutoff: FloatParam,
     #[id = "resonance"]
-    resonance: FloatParam
+    resonance: FloatParam,
 }
 
 impl Default for SulettaFX {
@@ -34,7 +34,7 @@ impl Default for SulettaFXParams {
                     min: 20.0,
                     max: 20_000.0,
                     factor: FloatRange::skew_factor(1.0),
-                }
+                },
             )
             .with_smoother(SmoothingStyle::Exponential(50.0))
             .with_unit(" Hz"),
@@ -44,7 +44,7 @@ impl Default for SulettaFXParams {
                 FloatRange::Linear {
                     min: 0.0,
                     max: 100.0,
-                }
+                },
             ),
         }
     }
@@ -104,9 +104,8 @@ impl Plugin for SulettaFX {
     ) -> ProcessStatus {
         for channel_samples in buffer.iter_samples() {
             for sample in channel_samples {
-                let cur_sample = *sample;
                 *sample += self.last_sample;
-                self.last_sample = cur_sample;
+                self.last_sample = *sample;
             }
         }
 
